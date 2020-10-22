@@ -5,7 +5,7 @@ Plain old Sudoku game
 
 - [ ] Custom sizes
 - [ ] Board generator
-- [ ] Import board from a file
+- [x] Import board from a file
 - [ ] Solver with Backtracker
 - [ ] Hints with Backtracker
 - [ ] GUI
