@@ -6,6 +6,6 @@ Plain old Sudoku game
 - [ ] Custom sizes
 - [ ] Board generator
 - [x] Import board from a file
-- [ ] Solver with Backtracker
+- [x] Solver with Backtracker
 - [ ] Hints with Backtracker
 - [ ] GUI
