@@ -7,22 +7,17 @@ namespace Sudoku
     {
         static void Main(string[] args)
         {
-            var sudoku = new SudokuBoard();
+            var sudoku = new SudokuModel();
 
+            Console.WriteLine(sudoku.Board);
             while (true)
             {
-                Console.WriteLine(sudoku);
 
-                Console.WriteLine("Enter row");
-                int row = int.Parse(Console.ReadLine());
-                
-                Console.WriteLine("Enter column");
-                int col = int.Parse(Console.ReadLine());
+                Console.Write("/> ");
+                string[] input = Console.ReadLine().Split(" ");
+                string command = input[0].ToUpper();
 
-                Console.WriteLine("Enter Value");
-                int val = int.Parse(Console.ReadLine());
-
-                sudoku.SetCell(row, col, val);
+                sudoku.ProcessCommand(command, input);
             }
             
             
