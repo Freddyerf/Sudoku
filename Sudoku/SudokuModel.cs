@@ -36,6 +36,81 @@ namespace Sudoku
             return files[rand.Next(files.Length)];
         }
 
+        #region Backtracker
+        
+        public bool HasNextEmptyCell(ref int row, ref int col)
+        {
+            for (int i = 0; i < Board.Dimension; i++)
+            {
+                for (int j = 0; j < Board.Dimension; j++)
+                {
+                    if (Board.Values[i][j].Equals(0))
+                    {
+                        row = i;
+                        col = j;
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public bool IsValid(int row, int col, int num)
+        {
+            // If there's a duplicate in its column return false
+            for (int i = 0; i < Board.Dimension; i++)
+            {
+                if (Board.Values[row][i].Equals(num)) return false;
+            }
+
+            // If there's a duplicate in its row return false
+            for (int i = 0; i < Board.Dimension; i++)
+            {
+                if (Board.Values[i][col].Equals(num)) return false;
+            }
+
+            int boxDim = (int)Math.Sqrt(Board.Dimension);
+            int boxFirstRow = row - (row % boxDim);
+            int boxFirstCol = col - (col % boxDim);
+                
+            // If there are duplicates in box is invalid
+            for (int i = 0; i < boxDim; i++)
+            {
+                for (int j = 0; j < boxDim; j++)
+                {
+                    if (Board.Values[boxFirstRow + i][boxFirstCol + j].Equals(num)) return false;
+                } 
+
+            }
+
+            return true;
+        }
+        public bool Solve()
+        {
+            int row = 0;
+            int col = 0;
+            if (!HasNextEmptyCell(ref row, ref col)) return true;
+
+            for (int n = 1; n <= Board.Dimension; n++)
+            {
+                if (IsValid(row, col, n))
+                {
+                    Board.Values[row][col] = n;
+
+                    if (Solve()) return true;
+
+                    Board.Values[row][col] = 0;
+                }
+            }
+
+            return false;
+        }
+        #endregion
+
+
+
+
         public bool SetCell(int row, int col, int value)
         {
             if (row > Board.Values.Length) return false;
@@ -115,6 +190,10 @@ namespace Sudoku
                 case "R":
                     ClearCell(int.Parse(input[1]), int.Parse(input[2]));
                     break;
+                case "SOLVE":
+                case "S":
+                    Solve();
+                    break;
                 case "VERIFY":
                 case "V":
                     Console.WriteLine(Verify() ? "Completed correctly" : "Incomplete or incorrect");
@@ -126,7 +205,8 @@ namespace Sudoku
                             "h|help: Print this help message\n" +
                             "q|quit: Exit game\n" +
                             "r|remove r c: Remove number from (r,c)\n" +
-                            "v|verify: Verify board correctness\n";
+                            "v|verify: Verify board correctness\n" +
+                            "s|solve: Solve the puzzle\n";
                     Console.WriteLine(help);
                     break;
             }
