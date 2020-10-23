@@ -132,6 +132,14 @@ namespace Sudoku
             return true;
         }
 
+        public void ClearBoard()
+        {
+            for (int i = 0; i < Board.Values.Length; i++)
+            {
+                Board.Starter[i].CopyTo(Board.Values[i], 0);
+            }
+        }
+
         public bool Verify()
         {
             for (int i = 0; i < Board.Dimension; i++)
@@ -190,8 +198,13 @@ namespace Sudoku
                 case "R":
                     ClearCell(int.Parse(input[1]), int.Parse(input[2]));
                     break;
+                case "CLEAR":
+                case "C":
+                    ClearBoard();
+                    break;
                 case "SOLVE":
                 case "S":
+                    ClearBoard();
                     Solve();
                     break;
                 case "VERIFY":
@@ -205,6 +218,7 @@ namespace Sudoku
                             "h|help: Print this help message\n" +
                             "q|quit: Exit game\n" +
                             "r|remove r c: Remove number from (r,c)\n" +
+                            "c|clear: Clear all entries\n" +
                             "v|verify: Verify board correctness\n" +
                             "s|solve: Solve the puzzle\n";
                     Console.WriteLine(help);

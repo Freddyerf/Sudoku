@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace Sudoku
 {
@@ -9,7 +10,16 @@ namespace Sudoku
         public int Dimension { get; set; }
         public SudokuBoard(int[][] board)
         {
-            this.Starter = this.Values = board;
+            this.Starter = new int[board.Length][];
+            this.Values = new int[board.Length][];
+            for (int i = 0; i < board.Length; i++)
+            {
+                this.Starter[i] = new int[board[i].Length];
+                this.Values[i] = new int[board[i].Length];
+                board[i].CopyTo(this.Starter[i], 0);
+                board[i].CopyTo(this.Values[i], 0);
+            }
+            
             this.Dimension = board.Length;
         }
 
